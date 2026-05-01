@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Trig Symmetry – No Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+.card {
+  max-width: 560px;
+  margin: 40px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+h1 { text-align: center; }
+.score { text-align: center; font-weight: bold; margin-bottom: 10px; }
+.question { font-size: 1.1em; margin: 20px 0; }
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+button {
+  padding: 10px;
+  width: 100%;
+  font-size: 1em;
+  border-radius: 6px;
+  border: none;
+  background: #e2e8f0;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: #cbd5e1; }
+button:disabled { opacity: 0.6; }
+.feedback {
+  margin-top: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+.footer {
+  font-size: 0.85em;
+  text-align: center;
+  color: #555;
+  margin-top: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h1>Trig Without Calculator</h1>
+
+<div class="score" id="scoreDisplay"></div>
+
+<div class="question" id="question"></div>
+
+<input type="text" id="answerInput" placeholder="Enter your answer (e.g. -0.6820)">
+
+<button id="submitBtn">Submit</button>
+
+<div class="feedback" id="feedback"></div>
+
+<div class="footer">
+One attempt only • Answers to 4 decimal places
+</div>
+</div>
+
+<script>
+const MAX_SCORE = 8;
+
+const questions = [
+  {
+    text: "sin 137° if sin 43° ≈ 0.6820",
+    answer: "-0.6820"
+  },
+  {
+    text: "sin 59° if sin 121° ≈ 0.8572",
+    answer: "0.8572"
+  },
+  {
+    text: "cos 143° if cos 37° ≈ 0.7986",
+    answer: "-0.7986"
+  },
+  {
+    text: "cos 24° if cos 156° ≈ -0.9135",
+    answer: "0.9135"
+  },
+  {
+    text: "sin 115° if sin 65° ≈ 0.9063",
+    answer: "0.9063"
+  },
+  {
+    text: "cos 132° if cos 48° ≈ 0.6691",
+    answer: "-0.6691"
+  }
+];
+
+let score = 0;
+let current;
+let active = true;
+
+function loadQuestion() {
+  active = true;
+  current = questions[Math.floor(Math.random() * questions.length)];
+
+  document.getElementById("scoreDisplay").textContent =
+    `Score: ${score} / ${MAX_SCORE}`;
+
+  document.getElementById("question").innerHTML =
+    `<strong>Without using your calculator, find:</strong><br>${current.text}`;
+
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("answerInput").value = "";
+  document.getElementById("submitBtn").disabled = false;
+}
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+  if (!active) return;
+  active = false;
+
+  document.getElementById("submitBtn").disabled = true;
+
+  const studentAnswer =
+    document.getElementById("answerInput").value.trim();
+
+  if (studentAnswer === current.answer) {
+    score++;
+    document.getElementById("feedback").textContent = "✅ Correct!";
+  } else {
+    document.getElementById("feedback").textContent =
+      `❌ Incorrect. Correct answer: ${current.answer}`;
+  }
+
+  if (score >= MAX_SCORE) {
+    document.getElementById("feedback").textContent += " 🎉 Target reached!";
+    return;
+  }
+
+  setTimeout(loadQuestion, 1800);
+});
+
+loadQuestion();
+</script>
+
+</body>
+</html>
